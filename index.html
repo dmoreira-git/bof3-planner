@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Stats Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        #result.hidden {
+            display: none;
+        }
+        /* tab styles */
+        .tabs { display: flex; gap: 8px; margin-top: 8px; }
+        .char-tab {
+            padding: 8px 12px;
+            background: #eee;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+        }
+        .char-tab.active {
+            background: #fff;
+            border-color: #999;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <h1>Character Stats Calculator</h1>
+    
+    <div class="form-group">
+        <label for="character">Select Character:</label>
+        
+        <div class="tabs" role="tablist" id="characterTabs">
+            <button type="button" class="char-tab active" data-char="Ryu" role="tab" aria-selected="true">Ryu</button>
+            <button type="button" class="char-tab" data-char="Nina" role="tab" aria-selected="false">Nina</button>
+            <button type="button" class="char-tab" data-char="Momo" role="tab" aria-selected="false">Momo</button>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label for="level">Enter Level (1-99):</label>
+        <input type="number" id="level" min="1" max="99" value="1">
+    </div>
+    
+    <button onclick="calculateStats()">Calculate Stats</button>
+    
+    <div id="result" class="hidden">
+        <h2>Stats for <span id="charName"></span> at Level <span id="charLevel"></span>:</h2>
+        <ul>
+            <li>HP: <span id="HP"></span></li>
+            <li>AP: <span id="AP"></span></li>
+            <li>PWR: <span id="PWR"></span></li>
+            <li>DEF: <span id="DEF"></span></li>
+            <li>AGL: <span id="AGL"></span></li>
+            <li>INT: <span id="INT"></span></li>
+        </ul>
+    </div>
+
+    
+    <script src="planner.js" defer></script>
+</body>
+</html>
