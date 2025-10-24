@@ -57,6 +57,11 @@
             border-color: #999;
             font-weight: 600;
         }
+
+        /* new: level + master side-by-side */
+        .input-row { display: flex; gap: 8px; align-items: center; }
+        .input-row > input[type="number"] { flex: 1 1 auto; }
+        .input-row > .master-select { flex: 0 0 200px; } /* adjust width as desired */
     </style>
 </head>
 <body>
@@ -73,8 +78,30 @@
     </div>
     
     <div class="form-group">
-        <label for="level">Enter Level (1-99):</label>
-        <input type="number" id="level" min="1" max="99" value="1">
+        <label for="level">Enter Level (1-99) and Master:</label>
+        <div class="input-row">
+            <input type="number" id="level" min="1" max="99" value="1">
+            <select id="master" class="master-select">
+                <option value="">--NONE--</option>
+                <option value="Mygas">Mygas</option>
+                <option value="Bunyan">Bunyan</option>
+                <option value="Durandal">Durandal</option>
+                <option value="D'Lonzo">D'Lonzo</option>
+                <option value="Yggdrasil">Yggdrasil</option>
+                <option value="Fahl">Fahl</option>
+                <option value="Giotto">Giotto</option>
+                <option value="Meryleep">Meryleep</option>
+                <option value="Hondara">Hondara</option>
+                <option value="Emitai">Emitai</option>
+                <option value="Deis">Deis</option>
+                <option value="Hachio">Hachio</option>
+                <option value="Bais">Bais</option>
+                <option value="Lang">Lang</option>
+                <option value="Lee">Lee</option>
+                <option value="Wynn">Wynn</option>
+                <option value="Lagon">Lagon</option>
+            </select>
+        </div>
     </div>
     
     <button onclick="calculateStats()">Calculate Stats</button>
