@@ -5,63 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Character Stats Calculator</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
+        :root{
+            --bg:#f6f8fb;
+            --card:#ffffff;
+            --muted:#6b7280;
+            --accent:#2563eb;
+            --accent-2:#7c3aed;
+            --shadow: 0 6px 18px rgba(23,23,23,0.08);
         }
-        .form-group {
-            margin-bottom: 15px;
+        html,body{height:100%}
+        body{
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background: linear-gradient(180deg,var(--bg),#eef2ff 60%);
+            max-width:900px;
+            margin:24px auto;
+            padding:28px;
+            color:#0f172a;
         }
-        label {
-            display: block;
-            margin-bottom: 5px;
+        h1{margin:0 0 14px;font-size:20px;letter-spacing:0.2px}
+        .form-group{margin-bottom:18px}
+        label{display:block;margin-bottom:6px;color:var(--muted);font-size:13px}
+        .tabs{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+        .char-tab{
+            padding:8px 12px;background:transparent;border:1px solid transparent;border-radius:8px;
+            cursor:pointer;color:#0f172a;font-weight:600;box-shadow:none;
+            transition:all .12s ease;
         }
-        select, input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #result {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-        }
-        #result.hidden {
-            display: none;
-        }
-        /* tab styles */
-        .tabs { display: flex; gap: 8px; margin-top: 8px; }
-        .char-tab {
-            padding: 8px 12px;
-            background: #eee;
-            border: 1px solid #ccc;
-            border-bottom: none;
-            border-radius: 4px 4px 0 0;
-            cursor: pointer;
-        }
-        .char-tab.active {
-            background: #fff;
-            border-color: #999;
-            font-weight: 600;
-        }
-
-        /* new: level + master side-by-side */
-        .input-row { display: flex; gap: 8px; align-items: center; }
-        .input-row > input[type="number"] { flex: 1 1 auto; }
-        .input-row > .master-select { flex: 0 0 200px; } /* adjust width as desired */
+        .char-tab:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+        .char-tab.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;border-color:transparent}
+        .input-row{display:flex;gap:10px;align-items:center}
+        input[type="number"]{flex:1;padding:10px;border-radius:8px;border:1px solid #e6e9ef;background:white}
+        .master-select{width:230px;padding:10px;border-radius:8px;border:1px solid #e6e9ef;background:white}
+        button{padding:10px 16px;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;border:none;cursor:pointer;font-weight:600}
+        button:hover{filter:brightness(.95);transform:translateY(-1px)}
+        #result{margin-top:20px;display:block}
+        #result.hidden{display:none}
+        .result-card{display:flex;gap:18px;align-items:center;background:var(--card);padding:16px;border-radius:12px;box-shadow:var(--shadow)}
+        .result-card img{width:120px;height:120px;object-fit:cover;border-radius:8px;border:1px solid #e6e9ef}
+        .result-stats{min-width:0}
+        .result-stats h2{margin:0 0 8px;font-size:16px}
+        .result-stats ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;color:var(--muted)}
+        .result-stats li{font-weight:700}
+        @media(max-width:560px){.result-card{flex-direction:column;align-items:flex-start}.master-select{width:130px}}
     </style>
 </head>
 <body>
@@ -74,6 +59,9 @@
             <button type="button" class="char-tab active" data-char="Ryu" role="tab" aria-selected="true">Ryu</button>
             <button type="button" class="char-tab" data-char="Nina" role="tab" aria-selected="false">Nina</button>
             <button type="button" class="char-tab" data-char="Momo" role="tab" aria-selected="false">Momo</button>
+            <button type="button" class="char-tab" data-char="Rei" role="tab" aria-selected="false">Rei</button>
+            <button type="button" class="char-tab" data-char="Garr" role="tab" aria-selected="false">Garr</button>
+            <button type="button" class="char-tab" data-char="Peco" role="tab" aria-selected="false">Peco</button>
         </div>
     </div>
     
@@ -107,15 +95,20 @@
     <button onclick="calculateStats()">Calculate Stats</button>
     
     <div id="result" class="hidden">
-        <h2>Stats for <span id="charName"></span> at Level <span id="charLevel"></span>:</h2>
-        <ul>
-            <li>HP: <span id="HP"></span></li>
-            <li>AP: <span id="AP"></span></li>
-            <li>PWR: <span id="PWR"></span></li>
-            <li>DEF: <span id="DEF"></span></li>
-            <li>AGL: <span id="AGL"></span></li>
-            <li>INT: <span id="INT"></span></li>
-        </ul>
+        <div class="result-card">
+            <img id="charImg" src="" alt="">
+            <div class="result-stats">
+                <h2><span id="charName"></span> — Level <span id="charLevel"></span></h2>
+                <ul>
+                    <li>HP: <span id="HP"></span></li>
+                    <li>AP: <span id="AP"></span></li>
+                    <li>PWR: <span id="PWR"></span></li>
+                    <li>DEF: <span id="DEF"></span></li>
+                    <li>AGL: <span id="AGL"></span></li>
+                    <li>INT: <span id="INT"></span></li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <script src="js/chars.js" defer></script>

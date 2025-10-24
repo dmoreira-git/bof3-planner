@@ -35,6 +35,11 @@ window.calculateStats = async function({ suppressAlerts = false } = {}) {
         }
         document.getElementById('charName').textContent = window.characters[selectedChar].name;
         document.getElementById('charLevel').textContent = parsed;
+        const imgEl = document.getElementById('charImg');
+        if (imgEl) {
+            imgEl.src = window.characters[selectedChar].img || '';
+            imgEl.alt = window.characters[selectedChar].name || '';
+        }
         document.getElementById('HP').textContent = stats.hp;
         document.getElementById('AP').textContent = stats.ap;
         document.getElementById('PWR').textContent = stats.pwr;
