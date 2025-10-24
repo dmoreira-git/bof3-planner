@@ -47,6 +47,37 @@
         .result-stats ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;color:var(--muted)}
         .result-stats li{font-weight:700}
         @media(max-width:560px){.result-card{flex-direction:column;align-items:flex-start}.master-select{width:130px}}
+
+        .master-line {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .master-line input[type="number"],
+        .master-line .master-count {
+            flex: 0 0 auto !important;
+            width: 6ch;
+            min-width: 36px;
+            padding: 6px;
+            box-sizing: border-box;
+            text-align: right;
+        }
+        .master-line select,
+        .master-line .master-select-line {
+            flex: 0 0 auto !important;
+            min-width: 140px;
+            max-width: 220px;
+            padding: 7px 8px;
+            box-sizing: border-box;
+        }
+        .master-line button,
+        .master-line .remove-master {
+            flex: 0 0 auto !important;
+            padding: 6px 8px;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
