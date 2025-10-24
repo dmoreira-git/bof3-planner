@@ -1,4 +1,25 @@
 window.gainsCache = {};
+window.masters = {};
+window.mastersLoadedPromise = (async function() {
+    try {
+        const res = await fetch('masters.json');
+        if (!res.ok) return;
+        const json = await res.json();
+        if (!json || !Array.isArray(json.masters)) return;
+        json.masters.forEach(m => {
+            const id = m.id || m.name;
+            window.masters[id] = {
+                name: m.name || id,
+                HP: Number(m.HP || 0),
+                AP: Number(m.AP || 0),
+                PWR: Number(m.PWR || 0),
+                DEF: Number(m.DEF || 0),
+                AGL: Number(m.AGL || 0),
+                INT: Number(m.INT || 0)
+            };
+        });
+    } catch (e) {}
+})();
 window.loadGains = async function(charId) {
     if (window.gainsCache[charId]) return window.gainsCache[charId];
     const charData = window.characters[charId];
