@@ -33,51 +33,6 @@ No install, no build step, no dependency on a server — it all runs in the brow
 4. Read the totals on the results card. Change anything and it recalculates
    immediately.
 
-### How the numbers are calculated
-
-For every level from the character's starting level up to the final level:
-
-| Contribution | Rule |
-| --- | --- |
-| Base gain | The character's gain row for that level (from their `.csv`). |
-| Master modifier | The Master assigned to that level is added to the base gain. |
-| Floor at zero | Each stat is clamped with `max(0, base + modifier)`, so a penalty can never subtract from the running total. |
-
-The **first level** (the character's starting level) never receives a Master
-modifier. Rows are laid out consecutively from there, so with a starting level of
-5 and a first row of 10 levels, those 10 levels cover levels 6–15.
-
-## Data files
-
-The site is driven entirely by flat data files — edit them and reload the page.
-
-### `masters.json`
-
-```json
-{
-  "masters": [
-    { "id": "Mygas", "name": "Mygas", "HP": 0, "AP": 1, "PWR": -1, "DEF": -1, "AGL": 0, "INT": 2 }
-  ]
-}
-```
-
-Each Master is a set of **per-level** modifiers applied to every level it covers.
-Values are integers and may be negative.
-
-### Character gain tables (`ryu.csv`, `nina.csv`, …)
-
-One row per level, six comma-separated values in the order **HP, AP, PWR, DEF,
-AGL, INT**:
-
-```csv
-20,11,12,10,8,10
-2,0,1,0,1,1
-3,1,1,1,1,2
-```
-
-- Row 1 is level 1 — it does **not** include equipment, so it is the character's
-  starting stats.
-- Each file must contain exactly **99 rows**; the loader rejects anything else.
 
 ## Running locally
 
@@ -100,40 +55,6 @@ The site is served with **GitHub Pages** straight from this repository's default
 branch — no build step, no artifact. Push a change and it goes live at:
 
 **<https://dmoreira-git.github.io/bof3-planner/>**
-
-## Project layout
-
-```
-bof3-planner/
-├── index.html          # Page shell and styling
-├── js/
-│   ├── chars.js        # Character roster (names, csv paths, starting levels, portraits)
-│   ├── loader.js       # Fetches masters.json and the per-character gain tables
-│   ├── levels.js       # Level validation helpers
-│   └── ui.js           # Level/Master rows and the stat calculation
-├── masters.json        # Master stat modifiers
-├── <character>.csv     # Per-level gain tables (ryu.csv, nina.csv, …)
-├── imgs/               # Character portraits
-└── testserver.bat      # One-line local dev server (python -m http.server)
-```
-
-## Adding a character
-
-1. Add a `99`-line CSV with the six stats per level.
-2. Drop a portrait into [`imgs/`](imgs).
-3. Register the character in [`js/chars.js`](js/chars.js):
-
-   ```js
-   Ryu: { name: 'Ryu', csv: 'ryu.csv', minLevel: 1, img: 'imgs/ryu.png' },
-   ```
-
-4. Add a tab for it in [`index.html`](index.html) (`data-char` must match the
-   key in `chars.js`).
-
-## Adding a Master
-
-Append an entry to the `masters` array in [`masters.json`](masters.json) with a
-unique `id`, a display `name`, and an integer modifier for each of the six stats.
 
 ## Contributing
 
